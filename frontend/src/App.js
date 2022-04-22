@@ -1,9 +1,8 @@
+import React from "react";
+import Map from "./Map";
+
 function App() {
-	return (
-		<div>
-			<h1>My App</h1>
-		</div>
-	);
+	return <Map />;
 }
 
 export default App;
