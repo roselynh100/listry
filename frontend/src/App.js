@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Home from './components/home';
-import Map from "./Map";
+import Map from "./components/map";
 
 function App() {
 	return (
