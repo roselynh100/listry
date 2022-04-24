@@ -1,4 +1,13 @@
 .homeContainer {
-    display: flex;
-    flex-direction: column;
+	display: flex;
+	flex-direction: column;
+}
+
+.navigate {
+	width: min-content;
+}
+
+.navigate > button {
+	width: max-content;
+	cursor: pointer;
 }

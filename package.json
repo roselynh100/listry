@@ -6,12 +6,15 @@
 	"scripts": {
 		"start": "node backend/server.js",
 		"server": "nodemon backend/server.js",
-		"client": "npm start --prefix frontend"
+		"client": "npm start --prefix frontend",
+		"dev": "concurrently \"npm run server\" \"npm run client\""
 	},
 	"author": "",
 	"license": "MIT",
 	"dependencies": {
 		"@reduxjs/toolkit": "^1.8.1",
+		"axios": "^0.26.1",
+		"cors": "^2.8.5",
 		"dotenv": "^16.0.0",
 		"express": "^4.17.3",
 		"express-async-handler": "^1.2.0",
@@ -21,13 +24,13 @@
 		"react-dom": "^18.0.0",
 		"react-leaflet": "^4.0.0",
 		"react-redux": "^8.0.1",
-		"react-router-dom": "^6.3.0",
 		"react-scripts": "^5.0.1",
 		"sass": "^1.50.1",
 		"tesseract.js": "^2.1.5"
 	},
 	"devDependencies": {
 		"@types/leaflet": "^1.7.9",
+		"concurrently": "^7.1.0",
 		"nodemon": "^2.0.15"
 	}
 }
