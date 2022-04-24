@@ -20,7 +20,7 @@ const listSearcher = asyncHandler(async (item) => {
 });
 
 const submitList = asyncHandler(async (req, res) => {
-	// console.log(req.body.name);
+	// console.log("reached");
 	nameArray = req.body.name.split(",");
 	let searchResults = [];
 	for (const item of nameArray) {
@@ -39,7 +39,7 @@ const submitList = asyncHandler(async (req, res) => {
 		}
 	}
 
-	res.status(200).json(searchResults);
+	res.send(searchResults);
 });
 
 module.exports = {

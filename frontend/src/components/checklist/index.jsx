@@ -1,12 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import "./checklist.scss";
 import ChecklistInput from "./ChecklistInput";
 import PostalCodeField from "./PostalCodeField";
+import { ItemContext } from "../../contexts/listContext";
+import { PostalContext } from "../../contexts/postalContext";
 
 export default function Checklist() {
-	const [items, setItems] = useState([]);
-	const [updated, setUpdated] = useState(false);
+	const [items, setItems] = useContext(ItemContext);
+	console.log(!items[0]);
+	const nextPageHandler = () => {
+		console.log(items);
+	};
 
 	return (
 		<div>
@@ -14,36 +19,18 @@ export default function Checklist() {
 			<br />
 			<ul>
 				<li>
-					<ChecklistInput
-						key={0}
-						index={0}
-						itemList={items}
-						setItemList={(list) => {
-							setItems(list);
-						}}
-						setUpdated={(update) => setUpdated(update)}
-						updated={updated}
-					/>
+					<ChecklistInput key={0} index={0} />
 				</li>
 				{items.map((item, index) => {
-					return (
+					return ( items[index] &&
 						<li>
-							<ChecklistInput
-								key={index + 1}
-								index={index + 1}
-								itemList={items}
-								setItemList={(list) => {
-									setItems(list);
-								}}
-								setUpdated={(update) => setUpdated(update)}
-								updated={updated}
-							/>
+							<ChecklistInput key={index + 1} index={index + 1} />
 						</li>
 					);
 				})}
 			</ul>
 			<Link to="/map">
-				<button>Next (to map)</button>
+				<button onClick={nextPageHandler}>Next (to map)</button>
 			</Link>
 		</div>
 	);

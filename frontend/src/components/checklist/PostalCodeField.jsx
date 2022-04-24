@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
+import { PostalContext } from "../../contexts/postalContext";
 
 function PostalCodeField() {
-	const [code, setCode] = useState("");
+	const [postal, setPostal] = useContext(PostalContext);
 	const handleInput = (event) => {
-		setCode(event.target.value);
+		setPostal(event.target.value);
 	};
 	return (
 		<div>
 			Postal code:{" "}
 			<input
 				type="text"
-				value={code}
+				value={postal}
 				onChange={(event) => handleInput(event)}
 			/>
 		</div>
