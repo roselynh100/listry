@@ -1,10 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import "./camera.scss";
 
 export default function Camera() {
-    return (
-        <div>
-            <input type="file" name="image" accept="image/*" capture="environment"/>
-        </div>
-    );
+	const [image, setImage] = useState();
+
+	const getImage = (event) => {
+		const imageHolder = event.target.files[0];
+		setImage(URL.createObjectURL(imageHolder));
+	};
+    
+	return (
+		<div>
+			<input
+				type="file"
+				accept="image/*"
+				onChange={(event) => {
+					getImage(event);
+				}}
+			/>
+			{image && <img src={image} />}
+		</div>
+	);
 }
+
