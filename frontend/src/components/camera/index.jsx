@@ -4,7 +4,7 @@ import "./camera.scss";
 export default function Camera() {
     return (
         <div>
-            <h1>placeholder</h1>
+            <input type="file" name="image" accept="image/*" capture="environment"/>
         </div>
     );
 }
