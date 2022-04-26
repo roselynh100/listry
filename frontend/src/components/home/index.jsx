@@ -8,11 +8,11 @@ export default function Home() {
 		<div className="homeContainer">
 			<h3>How would you like to enter your shopping list today?</h3>
 			<Link className="navigate" to="/camera">
-				<button>Take picture</button>
+				<button className="navigateButton">Take picture</button>
 			</Link>
 
 			<Link className="navigate" to="/checklist">
-				<button>Manually input</button>
+				<button className="checklistButton">Manually input</button>
 			</Link>
 		</div>
 	);
