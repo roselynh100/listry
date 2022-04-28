@@ -26,6 +26,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/fetch", require("./routes/itemRoutes"));
+app.use("/convert", require("./routes/locationRoutes"));
 
 app.get("/testing", (req, res) => {
 	res.send("Output testing");

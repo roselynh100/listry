@@ -1,5 +1,4 @@
 const asyncHandler = require("express-async-handler");
-const res = require("express/lib/response");
 
 const Item = require("../models/itemModel");
 
@@ -20,20 +19,15 @@ const listSearcher = asyncHandler(async (item) => {
 });
 
 const submitList = asyncHandler(async (req, res) => {
-	// console.log("reached");
-	nameArray = req.body.name.split(",");
+	items = req.body.name;
 	let searchResults = [];
-	for (const item of nameArray) {
-		if (item.includes(" ")) {
-			const sentence = item.split(" ");
-			for (const word of sentence) {
-				finalItem = await Item.find({ name: { $regex: word, $options: "i" } });
-				if (finalItem) {
-					for (const result of finalItem) {
-						if (result) {
-							searchResults.push(result);
-						}
-					}
+	for (const item of items) {
+		const phrase = item.split(" ");
+		for (const word of phrase) {
+			finalItems = await Item.find({ name: { $regex: word, $options: "i" } });
+			if (finalItems) {
+				for (const individualResult of finalItems) {
+					searchResults.push(individualResult);
 				}
 			}
 		}
