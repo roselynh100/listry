@@ -8,10 +8,6 @@ import { PostalContext } from "../../contexts/postalContext";
 
 export default function Checklist() {
 	const [items, setItems] = useContext(ItemContext);
-	console.log(!items[0]);
-	const nextPageHandler = () => {
-		console.log(items);
-	};
 
 	return (
 		<div>
@@ -30,7 +26,7 @@ export default function Checklist() {
 				})}
 			</ul>
 			<Link to="/map">
-				<button onClick={nextPageHandler}>Next (to map)</button>
+				<button>Next (to map)</button>
 			</Link>
 		</div>
 	);
