@@ -10,7 +10,8 @@ export default function Checklist() {
 	const [items, setItems] = useContext(ItemContext);
 
 	return (
-		<div>
+		<div className="checklistContainer">
+			<div className="checklistContent">
 			<PostalCodeField />
 			<br />
 			<ul>
@@ -25,9 +26,12 @@ export default function Checklist() {
 					);
 				})}
 			</ul>
+			</div>
+			<div className="checklistButtons">
 			<Link to="/map">
-				<button>Next (to map)</button>
+				<button className="nextButton">Next (to map)</button>
 			</Link>
+			</div>
 		</div>
 	);
 }
