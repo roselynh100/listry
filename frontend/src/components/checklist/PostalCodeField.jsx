@@ -8,10 +8,12 @@ function PostalCodeField() {
 	};
 	return (
 		<div>
-			Postal code:{" "}
+			<p className="text-2xl font-semibold mb-2">Postal Code: {" "}</p>
 			<input
+				className="text-xl border border-gray-300 border-2 rounded focus:outline-none focus:border-indigo-300 focus:border-2"
 				type="text"
 				value={postal}
+				placeholder="Insert postal code..."
 				onChange={(event) => handleInput(event)}
 			/>
 		</div>
