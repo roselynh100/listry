@@ -11,7 +11,7 @@ import { PostalProvider } from "./contexts/postalContext";
 function App() {
 	return (
 		<div className="bg-white h-screen">
-			<div className="container mx-auto w-96 h-screen border border-cyan-500">
+			<div className="container mx-auto w-96 h-screen">
 				<div className="p-6">
 					<PostalProvider>
 						<ItemProvider>
