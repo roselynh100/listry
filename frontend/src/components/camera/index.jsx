@@ -37,7 +37,7 @@ export default function Camera() {
         <div>
             <input
                 type="file"
-                className="file:bg-indigo-200 file:px-7 file:py-2 file:rounded file:border-transparent file:hover:bg-indigo-300 file:cursor-pointer drop-shadow-md"
+                className="file:bg-green-500 file:px-7 file:py-2 file:rounded file:border-transparent file:hover:bg-green-600 file:text-white file:font-semibold file:cursor-pointer drop-shadow-md"
                 accept="image/*"
                 onChange={handleImageChange}
             />

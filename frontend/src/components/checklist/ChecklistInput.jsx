@@ -36,7 +36,7 @@ function ChecklistInput(props) {
 				<input
 					type="text"
 					value={textValue}
-					className="border border-transparent border-2 rounded focus:outline-none focus:border-indigo-300 focus:border-2 w-full"
+					className="border border-transparent border-2 rounded focus:outline-none focus:border-green-500 focus:border-2 w-full"
 					placeholder="Insert grocery item..."
 					onChange={(event) => handleChange(event)}
 				/>

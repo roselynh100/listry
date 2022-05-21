@@ -29,7 +29,7 @@ export default function Checklist() {
 			</div>
 			<div>
 				<Link to="/map">
-					<button className="bg-indigo-200 drop-shadow-md hover:bg-indigo-300 font-normal w-40 py-2 rounded mt-4 mb-16">Next (to map)</button>
+					<button className="bg-green-500 drop-shadow-md hover:bg-green-600 text-white font-semibold w-40 py-2 rounded mt-4 mb-16">Next</button>
 				</Link>
 			</div>
 		</div>
