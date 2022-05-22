@@ -31,10 +31,14 @@ app.use("/convert", require("./routes/locationRoutes"));
 
 // Serve frontend
 if (process.env.NODE_ENV === "production") {
-	app.use(express.static(path.join(__dirname, '../frontend/build')))
-	app.get('*', (req, res) => res.sendFile(path.resolve(__dirname, '../', 'frontend', 'build', 'index.html')))
+	app.use(express.static(path.join(__dirname, "../frontend/build")));
+	app.get("*", (req, res) =>
+		res.sendFile(
+			path.resolve(__dirname, "../", "frontend", "build", "index.html")
+		)
+	);
 } else {
-	app.get('/', (req, res) => res.send('Please set to production'))
+	app.get("/", (req, res) => res.send("Please set to production"));
 }
 
 app.get("/testing", (req, res) => {
@@ -42,7 +46,10 @@ app.get("/testing", (req, res) => {
 });
 
 app.listen(port, () => console.log(`Server started on port ${port}`));
-const whitelist = ["http://localhost:3000"];
+const whitelist = [
+	"http://localhost:3000",
+	"https://listry-app.herokuapp.com/map",
+];
 
 const corsOptions = {
 	origin: function (origin, callback) {
