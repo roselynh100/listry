@@ -49,7 +49,7 @@ function Map() {
 			setComp(
 				<MapContainer
 					center={[coords[0], coords[1]]}
-					zoom={15}
+					zoom={13}
 					scrollWheelZoom={true}
 				>
 					<TileLayer

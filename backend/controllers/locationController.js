@@ -4,7 +4,7 @@ const Nominatim = require("nominatim-geocoder");
 const { GetLatLngByAddress } = require("geocoder-free");
 
 async function scrapeStores(postal) {
-	const browser = await puppeteer.launch({ headless: true });
+	const browser = await puppeteer.launch({ headless: false });
 	const page = await browser.newPage();
 	await page.goto("https://www.google.com/maps/");
 	await page.waitForSelector("#searchboxinput");
