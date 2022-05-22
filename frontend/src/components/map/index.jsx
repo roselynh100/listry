@@ -21,7 +21,7 @@ function Map() {
 		});
 		setItemsCopy(results);
 		axios
-			.post("http://localhost:5000/convert/", { postal: postalCopy })
+			.post("/convert/", { postal: postalCopy })
 			.then((response) => {
 				console.log(response.data);
 				setCoords(response.data.coords);
@@ -35,7 +35,7 @@ function Map() {
 	useEffect(() => {
 		setItems(itemsCopy);
 		axios
-			.post("http://localhost:5000/fetch/", { name: itemsCopy })
+			.post("/fetch/", { name: itemsCopy })
 			.then((response) => {
 				setFetchedItems(response.data);
 			})
