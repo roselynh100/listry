@@ -19,16 +19,36 @@ const listSearcher = asyncHandler(async (item) => {
 });
 
 const submitList = asyncHandler(async (req, res) => {
-	items = req.body.name;
+	itemList = req.body.name;
 	let searchResults = [];
-	for (const item of items) {
-		const phrase = item.split(" ");
-		for (const word of phrase) {
-			finalItems = await Item.find({ name: { $regex: word, $options: "i" } });
+	let finalItems;
+	let bestPrice;
+	for (const itemName of itemList) {
+		bestPrice = -1;
+		const words = itemName.split(" ");
+		finalItems = null;
+		for (const [index, word] of words.entries()) {
 			if (finalItems) {
-				for (const individualResult of finalItems) {
-					searchResults.push(individualResult);
+				finalItems = finalItems.filter((str) =>
+					str.name.toLowerCase().includes(word.toLowerCase())
+				);
+				if (finalItems.length == 0) {
+					finalItems = null;
 				}
+			} else {
+				finalItems = await Item.find({ name: { $regex: word, $options: "i" } });
+				if (finalItems.length == 0) {
+					finalItems = null;
+				}
+			}
+			if (finalItems && index === words.length - 1) {
+				for (const individualResult of finalItems) {
+					if (individualResult.price < bestPrice || bestPrice == -1) {
+						bestPrice = individualResult.price;
+						bestItem = individualResult;
+					}
+				}
+				searchResults.push(bestItem);
 			}
 		}
 	}

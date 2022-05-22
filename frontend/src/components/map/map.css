@@ -2,3 +2,7 @@
 	width: 98vw;
 	height: 87vh;
 }
+
+.divy::after {
+	content: "...";
+}
