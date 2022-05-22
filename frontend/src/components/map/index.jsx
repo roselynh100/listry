@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, Tooltip } from "react-leaflet";
 import "./map.css";
 import { ItemContext } from "../../contexts/listContext";
 import { PostalContext } from "../../contexts/postalContext";
@@ -10,8 +10,10 @@ function Map() {
 	const [postal, setPostal] = useContext(PostalContext);
 	const [coords, setCoords] = useState([]);
 	const [itemsCopy, setItemsCopy] = useState([]);
+	const [storeCoords, setStoreCoords] = useState();
 	const postalCopy = postal;
-	const [comp, setComp] = useState(null);
+	const [comp, setComp] = useState(<p>...Loading</p>);
+	const [fetchedItems, setFetchedItems] = useState([]);
 
 	useEffect(() => {
 		const results = items.filter((element) => {
@@ -21,10 +23,9 @@ function Map() {
 		axios
 			.post("http://localhost:5000/convert/", { postal: postalCopy })
 			.then((response) => {
-				// console.log(response.data.stores);
 				console.log(response.data);
 				setCoords(response.data.coords);
-
+				setStoreCoords(response.data.stores);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -36,7 +37,7 @@ function Map() {
 		axios
 			.post("http://localhost:5000/fetch/", { name: itemsCopy })
 			.then((response) => {
-				console.log(response.data);
+				setFetchedItems(response.data);
 			})
 			.catch((error) => {
 				console.log(error);
@@ -60,10 +61,68 @@ function Map() {
 							A pretty CSS3 popup. <br /> Easily customizable.
 						</Popup>
 					</Marker>
+					{storeCoords &&
+						storeCoords.map((coord) => {
+							if (coord.lat !== undefined && coord.long !== undefined) {
+								console.log(coord.store);
+								let fetchedFilter = fetchedItems.filter((obj) => {
+									return obj.store === coord.store;
+								});
+								let priceSum = 0;
+								for (const item of fetchedFilter) {
+									priceSum += item.price;
+								}
+								console.log(coord.store, fetchedFilter);
+								return (
+									<Marker
+										position={[coord.lat, coord.long]}
+										opacity={0.01}
+										interactive={false}
+									>
+										<Tooltip
+											direction="bottom"
+											offset={[-15.5, 27.5]}
+											opacity={1}
+											permanent
+											interactive
+										>
+											<div style={{ maxWidth: "100px", overflow: "clip" }}>
+												{coord.store} <br />
+												<span
+													style={{
+														color: "green",
+														display: "flex",
+														justifyContent: "center",
+														textAlign: "center",
+													}}
+												>
+													{priceSum ? "$" + priceSum.toFixed(2) : null}
+												</span>
+											</div>
+											<Popup>
+												{fetchedFilter.map((item) => {
+													return (
+														<>
+															<p>
+																<span style={{ fontWeight: "bold" }}>
+																	${item.price}
+																</span>
+																&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+																<span>{item.name}</span>
+															</p>
+														</>
+													);
+												})}
+											</Popup>
+										</Tooltip>
+									</Marker>
+								);
+							}
+						})}
 				</MapContainer>
 			);
 		}
-	}, [coords]);
+	}, [coords, storeCoords]);
 
 	useEffect(() => {
 		if (comp) {
@@ -71,7 +130,7 @@ function Map() {
 		}
 	});
 
-	return comp;
+	return <>{comp}</>;
 }
 
 export default Map;
