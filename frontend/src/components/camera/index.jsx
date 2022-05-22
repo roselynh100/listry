@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { createWorker } from "tesseract.js";
-import "./camera.scss";
+// import "./camera.scss";
 
 export default function Camera() {
     const [ocr, setOcr] = useState("");
@@ -37,6 +37,7 @@ export default function Camera() {
         <div>
             <input
                 type="file"
+                className="file:bg-green-500 file:px-7 file:py-2 file:rounded file:border-transparent file:hover:bg-green-600 file:text-white file:font-semibold file:cursor-pointer drop-shadow-md"
                 accept="image/*"
                 onChange={handleImageChange}
             />

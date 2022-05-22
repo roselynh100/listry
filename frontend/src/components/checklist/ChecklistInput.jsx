@@ -31,11 +31,17 @@ function ChecklistInput(props) {
 		}
 	}, [textValue]);
 	return (
-		<input
-			type="text"
-			value={textValue}
-			onChange={(event) => handleChange(event)}
-		/>
+		<ul className="list-disc ml-5">
+			<li>
+				<input
+					type="text"
+					value={textValue}
+					className="border border-transparent border-2 rounded focus:outline-none focus:border-green-500 focus:border-2 w-full"
+					placeholder="Insert grocery item..."
+					onChange={(event) => handleChange(event)}
+				/>
+			</li>
+		</ul>
 	);
 }
 

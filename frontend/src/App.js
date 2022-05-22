@@ -10,20 +10,24 @@ import { PostalProvider } from "./contexts/postalContext";
 
 function App() {
 	return (
-		<div>
-			<PostalProvider>
-				<ItemProvider>
-					<Router>
-						<Header />
-						<Routes>
-							<Route path="/" element={<Home />} />
-							<Route path="/camera" element={<Camera />} />
-							<Route path="/checklist" element={<Checklist />} />
-							<Route path="/map" element={<Map />} />
-						</Routes>
-					</Router>
-				</ItemProvider>
-			</PostalProvider>
+		<div className="bg-white h-screen">
+			<div className="container mx-auto w-96 h-screen">
+				<div className="p-6">
+					<PostalProvider>
+						<ItemProvider>
+							<Router>
+								<Header />
+								<Routes>
+									<Route path="/" element={<Home />} />
+									<Route path="/camera" element={<Camera />} />
+									<Route path="/checklist" element={<Checklist />} />
+									<Route path="/map" element={<Map />} />
+								</Routes>
+							</Router>
+						</ItemProvider>
+					</PostalProvider>
+				</div>
+			</div>
 		</div>
 	);
 }

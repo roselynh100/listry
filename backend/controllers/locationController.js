@@ -1,25 +1,38 @@
 const asyncHandler = require("express-async-handler");
 const puppeteer = require("puppeteer");
 const Nominatim = require("nominatim-geocoder");
+const { GetLatLngByAddress } = require("geocoder-free");
 
 async function scrapeStores(postal) {
-	const browser = await puppeteer.launch();
+	const browser = await puppeteer.launch({ headless: false });
 	const page = await browser.newPage();
 	await page.goto("https://www.google.com/maps/");
-	await page.type("#searchboxinput", `${postal[0]} ${postal[1]}`);
+	await page.waitForSelector("#searchboxinput");
+	await page.click("#searchboxinput");
+	await page.type("#searchboxinput", postal);
+	let element1 = await page.$("#searchboxinput");
+	let value1 = await page.evaluate((el) => el.textContent, element1);
+	if (value1 !== "grocery store") {
+		await element1.click({ clickCount: 3 });
+		await element1.type(postal);
+	}
 	await page.keyboard.press("Enter");
-	await page.waitForNavigation();
+	await page.waitForSelector('[data-value="Nearby"]');
 	await page.click('[data-value="Nearby"]');
 	await page.waitForNavigation();
 	await page.waitForSelector("#searchboxinput");
 	await page.click("#searchboxinput");
 	await page.type("#searchboxinput", "grocery store");
+	let element2 = await page.$("#searchboxinput");
+	let value2 = await page.evaluate((el) => el.textContent, element2);
+	if (value2 !== "grocery store") {
+		await element2.click({ clickCount: 3 });
+		await element2.type("grocery store");
+	}
 	await page.keyboard.press("Enter");
 	await page.waitForNavigation();
-	await page.waitForXPath(
-		'//*[@id="pane"]/div/div[1]/div/div/div[2]/div[1]/div[3]/div/a'
-	);
 
+	await page.waitForSelector(".hfpxzc");
 	const stores = await page.$$(".hfpxzc");
 	let arr = [];
 	for (const [index, store] of stores.entries()) {
@@ -28,69 +41,44 @@ async function scrapeStores(postal) {
 			store
 		);
 		let [addray] = await page.$x(
-			`//*[@id="pane"]/div/div[1]/div/div/div[2]/div[1]/div[${
-				(index + 1) * 2 + 1
+			`//*[@id="QA0Szd"]/div/div/div[1]/div[2]/div/div[1]/div/div/div[2]/div[1]/div[${
+				2 * index + 3
 			}]/div/div[2]/div[2]/div[1]/div/div/div/div[4]/div[1]/span[2]/jsl/span[2]`
 		);
-		const addtext = await addray.getProperty("textContent");
-		const address = await addtext.jsonValue();
+		// const addtext = await addray.getProperty("textContent");
+		// const address = await addtext.jsonValue();
+		const address = await page.evaluate((el) => el.textContent, addray);
 		arr.push({ store: value, address: address });
 	}
-
 	return arr;
 }
 
-async function scrapeCoords(url) {
-	const browser = await puppeteer.launch();
-	const page = await browser.newPage();
-	await page.goto(url);
-	const [el] = await page.$x(
-		"/html/body/div[2]/table[2]/tbody/tr/td[2]/p/strong"
-	);
-	const txt = await el.getProperty("textContent");
-	const rawTxt = await txt.jsonValue();
-	return rawTxt;
-}
-
 const getCoords = asyncHandler(async (req, res) => {
-	const geocoder = new Nominatim();
 	let returner = req.body.postal.trim();
+	let userLoc;
 
-	let returnerArray;
-	if (!returner.includes(" ")) {
-		returnerArray = returner.split("");
-		returnerArray.splice(3, 0, " ");
-		returner = returnerArray.join("");
-	}
+	await GetLatLngByAddress(returner).then((loc) => {
+		userLoc = loc;
+	});
 
-	returner = returner.split(" ");
-	const finale = await scrapeCoords(
-		`https://geocoder.ca/?locate=${returner[0]}+${returner[1]}&geoit=GeoCode`
-	);
 	const stores = await scrapeStores(returner);
-	const finale2 = finale.split(",");
-	finale2[1] = Number(finale2[1]);
-	finale2[0] = Number(finale2[0]);
 
 	const feeder = [];
 
-	for (const [index, store] of stores.entries()) {
-		await geocoder
-			.search({ country: "ca", street: stores[index].address })
-			.then((response) => {
-				feeder.push({
-					store: stores[index].store,
-					lat: response[0].lat,
-					long: response[0].lon,
-				});
+	for (const store of stores) {
+		await GetLatLngByAddress(store.address).then((loc) =>
+			feeder.push({
+				lat: loc[0],
+				long: loc[1],
+				store: store.store,
+				address: store.address,
 			})
-			.catch((error) => {
-				res.json(error);
-			});
+		);
 	}
 
-	res.json({ coords: finale2, stores: stores, feed: feeder });
-	// res.json(stores[0].address);
+	if (userLoc) {
+		res.json({ coords: userLoc, stores: feeder });
+	}
 });
 
 module.exports = {
