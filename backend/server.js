@@ -48,7 +48,7 @@ app.get("/testing", (req, res) => {
 app.listen(port, () => console.log(`Server started on port ${port}`));
 const whitelist = [
 	"http://localhost:3000",
-	"https://listry-app.herokuapp.com/map",
+	"https://listry-app.herokuapp.com/",
 ];
 
 const corsOptions = {
